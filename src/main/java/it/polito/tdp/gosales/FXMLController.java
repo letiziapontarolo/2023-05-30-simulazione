@@ -31,16 +31,16 @@ public class FXMLController {
     private Button btnSimula;
 
     @FXML
-    private ComboBox<?> cmbAnno;
+    private ComboBox<Integer> cmbAnno;
 
     @FXML
-    private ComboBox<?> cmbNazione;
+    private ComboBox<String> cmbNazione;
 
     @FXML
     private ComboBox<?> cmbProdotto;
 
     @FXML
-    private ComboBox<?> cmbRivenditore;
+    private ComboBox<String> cmbRivenditore;
 
     @FXML
     private TextArea txtArchi;
@@ -62,11 +62,46 @@ public class FXMLController {
 
     @FXML
     void doAnalizzaComponente(ActionEvent event) {
+    	
+    	String retailers = cmbRivenditore.getSelectionModel().getSelectedItem();
+    	txtResult.appendText(this.model.calcolaConnessa(retailers));
 
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	
+    	txtArchi.clear();
+    	txtVertici.clear();
+    	txtResult.clear();
+    	
+    	String input = txtNProdotti.getText();
+    	int m = 0;
+    	if (input == "") {
+    	 txtResult.setText("Scrivere un numero!");
+    	 return;
+    	 }
+    	try {
+    	 m = Integer.parseInt(input);
+
+    	 } catch (NumberFormatException e) {
+    	 e.printStackTrace();
+    	 return;
+    	}
+    	
+    	int anno = cmbAnno.getSelectionModel().getSelectedItem();
+    	String country = cmbNazione.getSelectionModel().getSelectedItem();
+    	
+    	this.model.creaGrafo(country, anno, m);
+    	
+    	txtResult.appendText("Grafo creato!\n");
+    	txtResult.appendText("#VERTICI: " + this.model.numeroVertici() + "\n");
+    	txtResult.appendText("#ARCHI: " + this.model.numeroArchi() + "\n");
+    	txtVertici.appendText(this.model.riempiVertici());
+    	txtArchi.appendText(this.model.riempiArchi());
+    	cmbRivenditore.setDisable(false);
+    	cmbRivenditore.getItems().addAll(this.model.listaRetailers());
+    	btnAnalizzaComponente.setDisable(false);
 
     }
 
@@ -90,7 +125,12 @@ public class FXMLController {
         assert txtQ != null : "fx:id=\"txtQ\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtVertici != null : "fx:id=\"txtVertici\" was not injected: check your FXML file 'Scene.fxml'.";
-
+        model = new Model();
+        cmbAnno.getItems().addAll(this.model.listaAnni());
+        cmbNazione.getItems().addAll(this.model.listaPaesi());
+        
+        
+        
     }
     
     public void setModel(Model model) {
