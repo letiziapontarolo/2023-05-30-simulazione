@@ -23,7 +23,7 @@ public class GOsalesDAO {
 
 	public void creaArchi (String country, int date, int m ,List<Adiacenza> adiacenze) {
 		
-		String query = "SELECT a.Retailer_code as r1, b.Retailer_code as r2, COUNT(distinct g1.Product_number) AS peso "
+		String query = "SELECT a.Retailer_code AS r1, b.Retailer_code AS r2, COUNT(distinct g1.Product_number) AS peso "
 				+ "FROM "
 				+ "(SELECT * "
 				+ "FROM go_retailers "
@@ -94,7 +94,7 @@ public class GOsalesDAO {
 		
 	}
 	
-public List<String> listaPaesi() {
+    public List<String> listaPaesi() {
 		
 		String query = "SELECT Country "
 				+ "FROM go_retailers "

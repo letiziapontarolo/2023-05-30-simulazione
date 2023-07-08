@@ -64,7 +64,13 @@ public class FXMLController {
     void doAnalizzaComponente(ActionEvent event) {
     	
     	String retailers = cmbRivenditore.getSelectionModel().getSelectedItem();
-    	txtResult.appendText(this.model.calcolaConnessa(retailers));
+    	
+    	if (retailers == null) {
+    		txtResult.appendText("Perfavore seleziona un rivenditore!\n");
+    		return;
+    	}
+    	
+    	txtResult.appendText(this.model.calcolaConnessa(retailers) + "\n");
 
     }
 
@@ -78,19 +84,31 @@ public class FXMLController {
     	String input = txtNProdotti.getText();
     	int m = 0;
     	if (input == "") {
-    	 txtResult.setText("Scrivere un numero!");
+    	 txtResult.setText("Perfavore inserisci un numero di prodotti in comune!");
     	 return;
     	 }
     	try {
     	 m = Integer.parseInt(input);
-
     	 } catch (NumberFormatException e) {
     	 e.printStackTrace();
     	 return;
     	}
+    	if (m < 0) {
+    		txtResult.appendText("Perfavore inserisci un numero positivo!\n");
+    		return;
+    	}
     	
-    	int anno = cmbAnno.getSelectionModel().getSelectedItem();
+    	Integer anno = cmbAnno.getSelectionModel().getSelectedItem();
+    	if (anno == null) {
+    		txtResult.appendText("Perfavore seleziona un anno!\n");
+    		return;
+    	}
+    	
     	String country = cmbNazione.getSelectionModel().getSelectedItem();
+    	if (country == null) {
+    		txtResult.appendText("Perfavore seleziona un paese!\n");
+    		return;
+    	}
     	
     	this.model.creaGrafo(country, anno, m);
     	
@@ -125,9 +143,8 @@ public class FXMLController {
         assert txtQ != null : "fx:id=\"txtQ\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtVertici != null : "fx:id=\"txtVertici\" was not injected: check your FXML file 'Scene.fxml'.";
-        model = new Model();
-        cmbAnno.getItems().addAll(this.model.listaAnni());
-        cmbNazione.getItems().addAll(this.model.listaPaesi());
+    
+       
         
         
         
@@ -135,6 +152,8 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	cmbAnno.getItems().addAll(this.model.listaAnni());
+        cmbNazione.getItems().addAll(this.model.listaPaesi());
     }
 
 }

@@ -31,7 +31,7 @@ public class Model {
 		
 	}
 	
-public List<String> listaRetailers() {
+    public List<String> listaRetailers() {
 		
 		List<String> l = new ArrayList<>();
 		for (Retailers r: retailersIdMap.values()) {
@@ -89,7 +89,7 @@ public List<String> listaRetailers() {
 		}
 		
 		s = "La componente connessa di " + nome + " ha dimensione di " + visitati.size() +
-				"\n"+"Il peso totale degli archi della componente connessa è " + sommaPesi;
+				"\n"+"Il peso totale degli archi della componente connessa è " + (int)sommaPesi;
 		return s;
 		}
 
